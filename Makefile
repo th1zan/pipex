@@ -3,27 +3,29 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tsanglar <tsanglar@student.42.fr>          +#+  +:+       +#+         #
+#    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 17:58:32 by ebennace          #+#    #+#              #
-#    Updated: 2023/07/06 16:42:40 by tsanglar         ###   ########.fr        #
+#    Updated: 2023/07/09 12:22:31 by thibault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 
-# ==== Folders ==== #
-SRC_DIR     = ./srcs/
-OBJ_DIR     = ./obj/
+# ==== External folders and libraries ==== #
 INC_DIR     = ./includes/
 LIBFT_DIR   = ./libft/
-PRINTF_DIR  = ./printf/srcs/
+LIBFT		= $(LIBFT_DIR)/libft.a
+PRINTF_DIR  = ./printf/
+PRINTF		= $(PRINTF_DIR)/libftprintf.a
 
-# === Files === #
-PRINTF_FILES    = ft_printf.c ft_print_csdiu.c ft_print_hex.c ft_printptr.c
+# ==== Project's folders ==== #
+SRC_DIR     = ./srcs/
+OBJ_DIR     = ./obj/
+
+# ==== Project's files ==== #
 SRC_FILES       = pipex.c
-SRCS            = $(addprefix $(SRC_DIR), $(SRC_FILES)) $(addprefix $(PRINTF_DIR), $(PRINTF_FILES))
-LIBFT           = $(LIBFT_DIR)/libft.a
+SRCS            = $(addprefix $(SRC_DIR), $(SRC_FILES))
 
 # ==== Template ==== #
 TEMPLATE = srcs/header/pipex_header.txt
@@ -49,24 +51,31 @@ MAKE            = make -s
 			@$(CC) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
-	@echo "==== Compiling libft ===="
-	@$(MAKE) -C $(LIBFT_DIR)
+#	@echo "==== Compiling libft ===="
+#	@$(MAKE) -C $(LIBFT_DIR)
+	@echo "==== Compiling libftprintf ===="
+	@$(MAKE) -C $(PRINTF_DIR)
 	@echo "==== Compiling $(NAME) ===="
-	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(LIBFT)
+#	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(PRINTF) #$(LIBFT)
+	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(PRINTF)
 	@echo "==== $(NAME) is ready! ===="
 	@cat "$(TEMPLATE)"
 
 all: $(NAME)
 
 clean:
-	@echo "==== Cleaning libft ===="
-	@$(MAKE) clean -C $(LIBFT_DIR)
+#	@echo "==== Cleaning libft ===="
+#	@$(MAKE) clean -C $(LIBFT_DIR)
+	@echo "==== Cleaning libftprintf ===="
+	@$(MAKE) clean -C $(PRINTF_DIR)
 	@echo "==== Cleaning objects ===="
 	@$(RM_FILE) $(OBJ_DIR)
 
 fclean: clean
-	@echo "==== Full cleaning libft ===="
-	@$(MAKE) fclean -C $(LIBFT_DIR)
+#	@echo "==== Full cleaning libft ===="
+#	@$(MAKE) fclean -C $(LIBFT_DIR)
+	@echo "==== Full cleaning libftprintf ===="
+	@$(MAKE) fclean -C $(PRINTF_DIR)
 	@echo "==== Full cleaning $(NAME) ===="
 	@$(RM_FILE) $(NAME)
 
