@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   inc_lib.h                                          :+:      :+:    :+:   */
+/*   inc_fct.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/26 09:39:17 by thibault          #+#    #+#             */
-/*   Updated: 2023/07/17 12:30:20 by thibault         ###   ########.fr       */
+/*   Created: 2023/04/26 09:17:41 by thibault          #+#    #+#             */
+/*   Updated: 2023/07/19 16:37:42 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INC_LIB_H
-# define INC_LIB_H
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <string.h>
-# include <errno.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <sys/types.h>
+#ifndef INC_FUNCTIONS_H
+# define INC_FUNCTIONS_H
 
-# include "../../libft/srcs/libft.h"
-# include "../../printf/srcs/ft_printf.h"
+/*pipex.c*/
+int		get_fd(char *file, int in_out);
+int		pipe_fd(int *fd_tab);
+int		fork_fct(int *pipe_tab, char **argv, char **path);
+int		check_empty(char **tab_str, int from, int to);
+int		iswhitespace(int c);
+char	**get_path(char **envp);
+int		exec_function(char *fct, char **path);
+int		free_tab(char **tab);
 #endif
+

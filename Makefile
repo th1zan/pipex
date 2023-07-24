@@ -6,7 +6,7 @@
 #    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 17:58:32 by ebennace          #+#    #+#              #
-#    Updated: 2023/07/09 12:22:31 by thibault         ###   ########.fr        #
+#    Updated: 2023/07/19 18:07:13 by thibault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,12 @@ OBJ_DIR     = ./obj/
 # ==== Project's files ==== #
 SRC_FILES       = pipex.c
 SRCS            = $(addprefix $(SRC_DIR), $(SRC_FILES))
+OBJ_FILES		= $(SRC_FILES:.c=.o)
+OBJS 			= $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 
 # ==== Template ==== #
 TEMPLATE = srcs/header/pipex_header.txt
+# TEMPLATE = 
 
 # ==== Debug && Leak ==== #
 SANITIZE       = -fsanitize=address
@@ -38,8 +41,11 @@ DEBUGGER       = lldb
 # ==== Remove ==== #
 RM_FILE = /bin/rm -rf
 
-# ==== Objet && compiling ==== #
-OBJS            = $(SRCS:.c=.o)
+# === Creating directorie === #
+obj:
+	@mkdir -p $(OBJ_DIR)
+
+# ==== Compiling ==== #
 CC              ?= gcc
 FLAGS           = -g3
 FLAGS           += -Wall -Werror -Wextra
@@ -47,33 +53,28 @@ FLAGS           += $(SANITIZE)
 MAKE            = make -s
 
 # === Convert all .c to .o with flags and header === # 
-%.o : %.c
-			@$(CC) $(FLAGS) -c $< -o $@
+
+all: obj $(NAME)
+
+${OBJS}: $(OBJ_DIR)%.o:$(SRC_DIR)%.c
+	@echo "...Compiling $<"
+	@$(CC) $(FLAGS) -o $@ -c $<
 
 $(NAME): $(OBJS)
-#	@echo "==== Compiling libft ===="
-#	@$(MAKE) -C $(LIBFT_DIR)
 	@echo "==== Compiling libftprintf ===="
 	@$(MAKE) -C $(PRINTF_DIR)
 	@echo "==== Compiling $(NAME) ===="
-#	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(PRINTF) #$(LIBFT)
-	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(PRINTF)
+	@$(CC) $(FLAGS) -o $(NAME) $(OBJS) $(PRINTF) $(LIBFT)
 	@echo "==== $(NAME) is ready! ===="
 	@cat "$(TEMPLATE)"
 
-all: $(NAME)
-
 clean:
-#	@echo "==== Cleaning libft ===="
-#	@$(MAKE) clean -C $(LIBFT_DIR)
 	@echo "==== Cleaning libftprintf ===="
 	@$(MAKE) clean -C $(PRINTF_DIR)
 	@echo "==== Cleaning objects ===="
 	@$(RM_FILE) $(OBJ_DIR)
 
 fclean: clean
-#	@echo "==== Full cleaning libft ===="
-#	@$(MAKE) fclean -C $(LIBFT_DIR)
 	@echo "==== Full cleaning libftprintf ===="
 	@$(MAKE) fclean -C $(PRINTF_DIR)
 	@echo "==== Full cleaning $(NAME) ===="

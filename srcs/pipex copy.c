@@ -6,7 +6,7 @@
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 13:13:29 by thibault          #+#    #+#             */
-/*   Updated: 2023/07/19 18:08:16 by thibault         ###   ########.fr       */
+/*   Updated: 2023/07/17 19:51:27 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 5)
 	{
-		ft_putstr_fd("./pipex file1 cmd1 cmd2 file2\n", 2);
+		ft_putstr_fd("./pipex file1 cmd1 cmd2 file2\n", 1);
 		exit(0);
 	}
 	/* Get file descriptor */
@@ -31,9 +31,6 @@ int	main(int argc, char **argv, char **envp)
 	/* Get paths */
 	path = get_path(envp);
 
-	/* Check empty argv*/
-	check_empty(argv, 2, argc - 1);
-
 	/* Redirection of SDTIN */
 	dup2(fd_in_out[0], STDIN_FILENO);
 	/* Redirection of STDOUT */
@@ -42,7 +39,7 @@ int	main(int argc, char **argv, char **envp)
 	/*Pipe creation*/
 	pipe_fd(pipe_tab);
 	/* Execution */
-	fork_fct(pipe_tab, argv, path);
+	exec_fct(pipe_tab, argv, path);
 
 
 	return (0);
@@ -57,9 +54,8 @@ int	get_fd(char *file, int in_out)
 		fd = open(file, O_RDONLY, 0777);
 		if (fd == -1)
 		{
-			ft_putstr_fd("pipex: no such file or directory: ", 2);
-			ft_putendl_fd(file, 2);
-			exit (0);
+			perror("Failed to open the INPUT file");
+			return (1);
 		}
 	}
 	if (in_out == 1)
@@ -67,7 +63,8 @@ int	get_fd(char *file, int in_out)
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 		if (fd == -1)
 		{
-			exit (0);
+			perror("Failed to open the OUTPUT file");
+			return (1);
 		}
 	}
 	return (fd);
@@ -83,17 +80,17 @@ int	pipe_fd(int *fd_tab)
 	if (pipe(fd_tab) == -1)
 	{
 		perror("Failed to create the pipe");
-		return (-1);
+		return (1);
 	}
 	return (0);
 }
 
-int fork_fct(int *pipe_tab, char **argv, char **path)
+int exec_fct(int *pipe_tab, char **argv, char **path)
 {
 	
 	pid_t 	pid_parent;
 	int		status;
-	
+
 	/* Fork the process */
 	/* Execution of fct 1 (child) then 2 (parent)*/
 	pid_parent = fork();
@@ -105,8 +102,8 @@ int fork_fct(int *pipe_tab, char **argv, char **path)
 	*/
 	if (pid_parent == -1)
 	{
-		perror("Failed to fork");
-		exit (1);
+		perror("Fail to fork");
+		return (1);
 	}
 	if (pid_parent == 0)
 	{
@@ -166,47 +163,6 @@ int	free_tab(char **tab)
 	return (0);
 }
 
-int	check_empty(char **tab_str, int from, int to)
-{
-	int	i;
-	int j;
-	int	ws;
-	
-	i = from;
-	while (i < to)
-	{ 
-		if (tab_str[i] == NULL)
-		{
-			perror("./pipex file1 cmd1 cmd2 file2\n");
-			exit (0);
-		}
-		j = 0;
-		ws = 0;
-		while (tab_str[i][j] != 0)
-		{
-			ws = ws + iswhitespace(tab_str[i][j]);
-			j++;
-		}
-		if (ws == 0)
-		{
-			ft_putstr_fd("pipex: cmd", 2);
-			ft_putnbr_fd(i - 1, 2);
-			ft_putendl_fd(" not valid (empty or contains whitespaces only)", 2);
-			exit (0);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int iswhitespace(int c)
-{
-	if (c == '\t' || c == '\v' || c == '\n' || c == ' ' || c == '\r' || c == '\f')
-		return (0);
-	else
-		return (1);
-}
-
 int	exec_function(char *fct, char **path)
 {
 	char	**fct_arg;
@@ -215,6 +171,7 @@ int	exec_function(char *fct, char **path)
 
 	temp = NULL;
 	fct_arg = NULL;
+	
 	/* Separate function and args*/
 	fct_arg = ft_split(fct, ' ');
 
@@ -231,26 +188,24 @@ int	exec_function(char *fct, char **path)
 		{
 			if (access(fct, X_OK) == -1)
 			{
-				perror("command exists but can't be executed by the user");
+				perror("The function exists but can't be executed by the user");
 				return (1);
 			}
 			if (execve(fct, fct_arg, path) == -1)
 			{
-				perror("error when executing the command");
+				perror("Error when executing the function");
 				return (1);
 			}
 		}
 		else
 			i++;
 	}
+	free_tab(fct_arg);
 	if (access(fct, F_OK) == -1)
 	{
-		ft_putstr_fd("pipex: command not found: ", 2);
-		ft_putendl_fd(fct_arg[0], 2);
-		free_tab(fct_arg);
+		perror("The function doesn't exist");
 		return (1);
 	}
-	free_tab(fct_arg);
 	return (0);
 }
 
