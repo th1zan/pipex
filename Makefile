@@ -6,7 +6,7 @@
 #    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/20 17:58:32 by ebennace          #+#    #+#              #
-#    Updated: 2023/07/19 18:07:13 by thibault         ###   ########.fr        #
+#    Updated: 2023/07/24 11:03:08 by thibault         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME = pipex
 INC_DIR     = ./includes/
 LIBFT_DIR   = ./libft/
 LIBFT		= $(LIBFT_DIR)/libft.a
-PRINTF_DIR  = ./printf/
+PRINTF_DIR  = ./ft_printf/
 PRINTF		= $(PRINTF_DIR)/libftprintf.a
 
 # ==== Project's folders ==== #

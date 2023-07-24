@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   inc_lib.h                                          :+:      :+:    :+:   */
+/*   ft_printptr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thibault <thibault@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/26 09:39:17 by thibault          #+#    #+#             */
-/*   Updated: 2023/07/24 11:03:31 by thibault         ###   ########.fr       */
+/*   Created: 2022/12/13 14:29:47 by tsanglar          #+#    #+#             */
+/*   Updated: 2023/07/08 18:03:38 by thibault         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef INC_LIB_H
-# define INC_LIB_H
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <string.h>
-# include <errno.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <sys/types.h>
+#include "ft_printf.h"
 
-# include "../../libft/srcs/libft.h"
-# include "../../ft_printf/srcs/ft_printf.h"
-#endif
+int	ft_printf_ptr(unsigned long dec, int *result)
+{
+	write(1, "0x", 2);
+	*result = *result + 2;
+	if (dec == 0)
+	{
+		write(1, "0", 1);
+		*result = *result + 1;
+	}
+	else
+		ft_printf_hex(dec, result, 0);
+	return (0);
+}
