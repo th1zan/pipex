@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: thibault <thibault@student.42.fr>          +#+  +:+       +#+         #
+#    By: tsanglar <tsanglar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/06/20 17:58:32 by ebennace          #+#    #+#              #
-#    Updated: 2023/07/24 11:03:08 by thibault         ###   ########.fr        #
+#    Created: 2023/07/25 17:18:35 by tsanglar          #+#    #+#              #
+#    Updated: 2023/07/25 17:47:21 by tsanglar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ PRINTF		= $(PRINTF_DIR)/libftprintf.a
 SRC_DIR     = ./srcs/
 OBJ_DIR     = ./obj/
 
-# ==== Project's files ==== #
-SRC_FILES       = pipex.c
+# ==== Project's files and path ==== #
+SRC_FILES       = pipex.c handle_error.c pipex_adds.c
 SRCS            = $(addprefix $(SRC_DIR), $(SRC_FILES))
 OBJ_FILES		= $(SRC_FILES:.c=.o)
 OBJS 			= $(addprefix $(OBJ_DIR), $(OBJ_FILES))
@@ -41,10 +41,6 @@ DEBUGGER       = lldb
 # ==== Remove ==== #
 RM_FILE = /bin/rm -rf
 
-# === Creating directorie === #
-obj:
-	@mkdir -p $(OBJ_DIR)
-
 # ==== Compiling ==== #
 CC              ?= gcc
 FLAGS           = -g3
@@ -54,13 +50,16 @@ MAKE            = make -s
 
 # === Convert all .c to .o with flags and header === # 
 
-all: obj $(NAME)
+all: $(NAME)
 
-${OBJS}: $(OBJ_DIR)%.o:$(SRC_DIR)%.c
+obj:
+	@mkdir -p $(OBJ_DIR)
+
+${OBJS}: $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@echo "...Compiling $<"
 	@$(CC) $(FLAGS) -o $@ -c $<
 
-$(NAME): $(OBJS)
+$(NAME): obj $(OBJS) 
 	@echo "==== Compiling libftprintf ===="
 	@$(MAKE) -C $(PRINTF_DIR)
 	@echo "==== Compiling $(NAME) ===="

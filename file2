@@ -1,1 +1,9 @@
-       9      74     462
+total 136
+-rw-r--r--  1 tsanglar  2022_lausanne   2966 Jul 25 13:32 Makefile
+-rw-r--r--  1 tsanglar  2022_lausanne   4220 Jul 25 11:05 file1
+-rw-r--r--  1 tsanglar  2022_lausanne      0 Jul 25 15:46 file2
+drwxr-xr-x  7 tsanglar  2022_lausanne    238 Jul 25 15:46 ft_printf
+drwxr-xr-x  6 tsanglar  2022_lausanne    204 Jul 25 15:46 libft
+drwxr-xr-x  5 tsanglar  2022_lausanne    170 Jul 25 15:46 obj
+-rwxr-xr-x  1 tsanglar  2022_lausanne  56320 Jul 25 15:46 pipex
+drwxr-xr-x  6 tsanglar  2022_lausanne    204 Jul 25 13:27 srcs
