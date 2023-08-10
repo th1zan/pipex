@@ -1,3 +1,6 @@
+# Fichier commenté
+[Archive contenant des commentaires et le code sur une page](./srcs/pipex_all_with_comments.c)
+
 # Principe de pipex
 ![](./ressources/pipex_principes.png)
 
