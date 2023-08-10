@@ -7,5 +7,5 @@
 # Fork
 ![](./ressources/pipex_fork.png)
 
-# Donnée
-[](<./ressources/00P42 - Pipex.pdf>)
+# Donnée de l'exercice
+[pipex.pdf](<./ressources/00P42 - Pipex.pdf>)
