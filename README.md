@@ -1,11 +1,11 @@
 # Principe de pipex
-![Alt text](pipex_principes.png)
+!(./ressources/pipex_principes.png)
 
 # Gestion des erreurs (simplifiée)
-![Alt text](pipex_error.png)
+!(./ressources/pipex_error.png)
 
 # Fork
-![Alt text](pipex_fork.png)
+!(./ressources/pipex_fork.png)
 
 # Donnée
-[Title](<ressources/00P42 - Pipex.pdf>)
+(<ressources/00P42 - Pipex.pdf>)
